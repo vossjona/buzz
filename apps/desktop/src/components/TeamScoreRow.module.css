@@ -1,0 +1,47 @@
+/* ABOUTME: Styling for host-side team score rows with ± buttons. */
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr auto auto auto;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.75rem;
+  border-left: 4px solid var(--team-color);
+  border-radius: 0.25rem;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.active {
+  background: color-mix(in srgb, var(--team-color) 20%, transparent);
+}
+
+.name {
+  font-weight: 600;
+}
+
+.score {
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  min-width: 2ch;
+  text-align: right;
+}
+
+.button {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 0.25rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+.button:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.button:active {
+  background: rgba(255, 255, 255, 0.16);
+}

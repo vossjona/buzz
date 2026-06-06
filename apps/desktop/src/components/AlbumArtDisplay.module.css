@@ -1,0 +1,161 @@
+/* ABOUTME: Styles for the album art display in the Player window during Spotify mode. */
+/* ABOUTME: Shows album artwork, music playing bars, paused indicator, and revealed track info. */
+
+.albumArtDisplay {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-v-lg);
+  flex: 1;
+}
+
+.albumArtContainer {
+  position: relative;
+  width: var(--size-album-art-player);
+  height: var(--size-album-art-player);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+.albumArtImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.albumArtPlaceholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: var(--color-surface);
+}
+
+.musicIcon {
+  font-size: var(--text-5xl);
+  opacity: 0.5;
+}
+
+.musicBars {
+  position: absolute;
+  bottom: var(--spacing-v-md);
+  right: var(--spacing-h-md);
+  display: flex;
+  gap: 3px;
+  align-items: flex-end;
+  height: clamp(20px, 3vmin, 32px);
+  padding: 4px 8px;
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: var(--radius-sm);
+}
+
+.bar {
+  width: 4px;
+  background: #1db954;
+  border-radius: 2px;
+  animation: musicBar 0.8s ease-in-out infinite;
+}
+
+.bar:nth-child(1) {
+  animation-delay: 0s;
+}
+.bar:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.bar:nth-child(3) {
+  animation-delay: 0.4s;
+}
+.bar:nth-child(4) {
+  animation-delay: 0.1s;
+}
+
+@keyframes musicBar {
+  0%,
+  100% {
+    height: 4px;
+  }
+  50% {
+    height: 16px;
+  }
+}
+
+.pausedIndicator {
+  position: absolute;
+  bottom: var(--spacing-v-md);
+  right: var(--spacing-h-md);
+  padding: 4px 8px;
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: var(--radius-sm);
+}
+
+.pauseIcon {
+  font-size: var(--text-base);
+}
+
+.revealedTrackInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-v-xs);
+  text-align: center;
+  max-width: var(--size-album-art-player);
+}
+
+.titleRow {
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.2;
+  text-align: center;
+  margin-top: 0.5rem;
+}
+
+.artistRow {
+  font-size: 1.25rem;
+  opacity: 0.85;
+  text-align: center;
+  margin-top: 0.25rem;
+}
+
+.albumRow {
+  font-size: 1rem;
+  opacity: 0.7;
+  text-align: center;
+  margin-top: 0.5rem;
+}
+
+.yearRow {
+  font-size: 1rem;
+  opacity: 0.7;
+  text-align: center;
+  margin-top: 0.25rem;
+}
+
+.trackCounter {
+  display: flex;
+  align-items: baseline;
+  gap: var(--spacing-h-xs);
+  color: var(--color-text-muted);
+}
+
+.trackLabel {
+  font-size: var(--text-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.trackNumber {
+  font-size: var(--text-2xl);
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.trackSeparator {
+  font-size: var(--text-base);
+}
+
+.trackTotal {
+  font-size: var(--text-base);
+}

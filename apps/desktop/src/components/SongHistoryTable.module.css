@@ -1,0 +1,70 @@
+/* ABOUTME: Styles for the per-round song/question history table on the final screen. */
+/* ABOUTME: Shows correct/wrong/no-answer indicators per team per round. */
+
+.songHistoryTableContainer {
+  overflow-y: auto;
+  max-height: 100%;
+}
+
+.songHistoryTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--text-sm);
+}
+
+.songHistoryTable th {
+  position: sticky;
+  top: 0;
+  background: var(--color-bg);
+  padding: var(--spacing-v-sm) var(--spacing-h-sm);
+  font-weight: 600;
+  text-align: center;
+  border-bottom: 2px solid var(--color-surface);
+}
+
+.colTeamHeader {
+  color: var(--team-color);
+}
+
+.colSongHeader,
+.colNumberHeader {
+  text-align: left;
+  color: var(--color-text-muted);
+}
+
+.songHistoryTable td {
+  padding: var(--spacing-v-xs) var(--spacing-h-sm);
+  border-bottom: 1px solid
+    color-mix(in srgb, var(--color-surface) 50%, transparent);
+}
+
+.colNumber {
+  color: var(--color-text-muted);
+  text-align: left;
+  width: 30px;
+}
+
+.colSong {
+  color: var(--color-text);
+  max-width: 200px;
+  word-break: break-word;
+}
+
+.colTeam {
+  text-align: center;
+  font-weight: 700;
+  font-size: var(--text-base);
+}
+
+.correct {
+  color: var(--color-success);
+}
+
+.wrong {
+  color: var(--color-error);
+}
+
+.noAnswer {
+  color: var(--color-text-muted);
+  opacity: 0.5;
+}

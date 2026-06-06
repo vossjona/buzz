@@ -1,0 +1,39 @@
+# Pre-commit hooks for Buzz project
+# Install: pre-commit install
+# Run manually: pre-commit run --all-files
+
+repos:
+  # Standard pre-commit hooks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-json
+      - id: check-added-large-files
+        args: ['--maxkb=500']
+
+  # Local hooks using pnpm commands
+  - repo: local
+    hooks:
+      - id: prettier
+        name: prettier
+        entry: pnpm format
+        language: system
+        pass_filenames: false
+        types: [file]
+
+      - id: eslint
+        name: eslint
+        entry: pnpm lint
+        language: system
+        pass_filenames: false
+        types: [file]
+
+      - id: typecheck
+        name: typecheck
+        entry: pnpm typecheck
+        language: system
+        pass_filenames: false
+        types: [file]

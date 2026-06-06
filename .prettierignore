@@ -1,0 +1,19 @@
+# Build outputs
+dist/
+build/
+target/
+
+# Dependencies
+node_modules/
+
+# Tauri generated
+src-tauri/target/
+src-tauri/Cargo.lock
+
+# IDE
+.idea/
+.vscode/
+
+# Misc
+*.log
+.DS_Store

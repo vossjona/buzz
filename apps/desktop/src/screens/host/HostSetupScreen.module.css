@@ -1,0 +1,95 @@
+/* ABOUTME: Styles for the host-side setup screen with two-column layout. */
+/* ABOUTME: Contains team list, game settings, and player view controls. */
+
+.hostSetupScreen {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: var(--spacing-v-xl) var(--spacing-h-xl);
+  gap: var(--spacing-v-lg);
+}
+
+.hostSetupColumns {
+  display: flex;
+  gap: var(--spacing-h-lg);
+  flex: 1;
+  min-height: 0;
+}
+
+.hostSetupLeft,
+.hostSetupRight {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.hostSetupLeft .hostSection,
+.hostSetupRight .hostSection {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.teamCount {
+  font-size: var(--text-xl);
+  font-weight: 600;
+  color: var(--color-text);
+  margin-bottom: var(--spacing-v-md);
+}
+
+.teamList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-v-sm);
+}
+
+.teamRow {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-h-md);
+  padding: var(--spacing-v-sm) var(--spacing-h-md);
+  background: var(--color-bg);
+  border-radius: var(--radius-md);
+  border-left: 4px solid var(--team-color);
+  opacity: 0.6;
+  transition: opacity 0.3s ease;
+}
+
+.teamRow.lockedIn {
+  opacity: 1;
+  background: color-mix(in srgb, var(--team-color) 15%, var(--color-bg));
+}
+
+.teamRow .teamKey {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: var(--size-kbd);
+  height: var(--size-kbd);
+  background: var(--team-color);
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  font-size: var(--text-sm);
+}
+
+.teamRow .teamName {
+  flex: 1;
+  font-weight: 600;
+  color: var(--team-color);
+}
+
+.teamRow .teamStatus {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+.teamRow.lockedIn .teamStatus {
+  color: var(--color-success);
+}
+
+.playerViewSection {
+  margin-top: auto;
+  padding-top: var(--spacing-v-md);
+}

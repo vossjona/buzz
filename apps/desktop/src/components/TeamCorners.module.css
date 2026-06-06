@@ -1,0 +1,146 @@
+/* ABOUTME: Styles for team corner displays positioned at screen corners during gameplay. */
+/* ABOUTME: Includes pulse, jump, shake animations and score-based scaling. */
+
+.teamCorners {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.teamCorner {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-v-xs);
+  padding: var(--spacing-v-md) var(--spacing-h-md);
+  background: var(--color-surface);
+  border: 2px solid color-mix(in srgb, var(--team-color) 50%, transparent);
+  border-radius: var(--radius-lg);
+  min-width: var(--size-team-corner-min);
+  transition:
+    border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    background 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: auto;
+  transform: scale(var(--score-scale, 1));
+}
+
+.topLeft {
+  top: var(--spacing-v-lg);
+  left: var(--spacing-h-lg);
+  transform-origin: top left;
+}
+
+.topRight {
+  top: var(--spacing-v-lg);
+  right: var(--spacing-h-lg);
+  transform-origin: top right;
+}
+
+.bottomLeft {
+  bottom: var(--spacing-v-lg);
+  left: var(--spacing-h-lg);
+  transform-origin: bottom left;
+}
+
+.bottomRight {
+  bottom: var(--spacing-v-lg);
+  right: var(--spacing-h-lg);
+  transform-origin: bottom right;
+}
+
+.active {
+  border-color: var(--team-color);
+  background: color-mix(in srgb, var(--team-color) 25%, var(--color-surface));
+  box-shadow: 0 0 30px color-mix(in srgb, var(--team-color) 50%, transparent);
+  transform: scale(1.1);
+}
+
+.pulsing {
+  animation: cornerPulse 0.6s ease-in-out infinite alternate;
+}
+
+@keyframes cornerPulse {
+  from {
+    border-color: color-mix(in srgb, var(--team-color) 50%, transparent);
+    box-shadow: 0 0 10px color-mix(in srgb, var(--team-color) 20%, transparent);
+  }
+  to {
+    border-color: var(--team-color);
+    box-shadow: 0 0 25px color-mix(in srgb, var(--team-color) 60%, transparent);
+  }
+}
+
+.eliminated {
+  opacity: 0.35;
+  border-color: var(--color-text-muted);
+  animation: none;
+}
+
+.eliminated .cornerName {
+  color: var(--color-text-muted);
+}
+
+.jumping {
+  animation: cornerJump 0.5s ease-out;
+}
+
+@keyframes cornerJump {
+  0%,
+  100% {
+    transform: translateY(0) scale(var(--score-scale, 1));
+  }
+  20% {
+    transform: translateY(-15px) scale(var(--score-scale, 1));
+  }
+  40% {
+    transform: translateY(0) scale(var(--score-scale, 1));
+  }
+  60% {
+    transform: translateY(-8px) scale(var(--score-scale, 1));
+  }
+  80% {
+    transform: translateY(0) scale(var(--score-scale, 1));
+  }
+}
+
+.shaking {
+  animation: cornerShake 0.4s ease-out;
+}
+
+@keyframes cornerShake {
+  0%,
+  100% {
+    transform: translateX(0) scale(var(--score-scale, 1));
+  }
+  10% {
+    transform: translateX(-8px) scale(var(--score-scale, 1));
+  }
+  30% {
+    transform: translateX(8px) scale(var(--score-scale, 1));
+  }
+  50% {
+    transform: translateX(-6px) scale(var(--score-scale, 1));
+  }
+  70% {
+    transform: translateX(6px) scale(var(--score-scale, 1));
+  }
+  90% {
+    transform: translateX(-3px) scale(var(--score-scale, 1));
+  }
+}
+
+.cornerName {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--team-color);
+}
+
+.cornerScore {
+  font-size: var(--text-xl);
+  font-weight: 700;
+  color: var(--color-text);
+}

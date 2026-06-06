@@ -1,0 +1,159 @@
+/* ABOUTME: Styles for the Spotify setup section in the Host Setup Screen. */
+/* ABOUTME: Includes connect button, playlist selector, score cap input, and status display. */
+
+.spotifySetupSection {
+  margin-top: var(--spacing-v-lg);
+  padding-top: var(--spacing-v-lg);
+  border-top: 1px solid
+    color-mix(in srgb, var(--color-text-muted) 30%, transparent);
+}
+
+.spotifySetupSection h3 {
+  font-size: var(--text-base);
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: var(--spacing-v-md);
+}
+
+.spotifyError {
+  padding: var(--spacing-v-sm) var(--spacing-h-md);
+  background: color-mix(in srgb, var(--color-error) 20%, transparent);
+  border: 1px solid var(--color-error);
+  border-radius: var(--radius-md);
+  color: var(--color-error);
+  font-size: var(--text-sm);
+  margin-bottom: var(--spacing-v-md);
+}
+
+.spotifyConnectButton {
+  width: 100%;
+  padding: var(--spacing-v-md) var(--spacing-h-md);
+  background: #1db954;
+  border: none;
+  border-radius: var(--radius-md);
+  color: white;
+  font-size: var(--text-base);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-h-sm);
+}
+
+.spotifyConnectButton:hover {
+  background: #1ed760;
+}
+
+.spotifyConnectButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.spotifyConnected {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-v-md);
+}
+
+.spotifyStatus {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-h-sm);
+  font-size: var(--text-sm);
+}
+
+.spotifyStatusDot {
+  width: 8px;
+  height: 8px;
+  background: #1db954;
+  border-radius: 50%;
+  animation: spotifyPulse 2s ease-in-out infinite;
+}
+
+@keyframes spotifyPulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.spotifyDisconnectLink {
+  background: none;
+  border: none;
+  color: var(--color-text-muted);
+  font-size: var(--text-xs);
+  cursor: pointer;
+  margin-left: auto;
+  text-decoration: underline;
+}
+
+.spotifyDisconnectLink:hover {
+  color: var(--color-error);
+}
+
+.spotifyPlaylistSelect,
+.spotifyScoreCap {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-v-xs);
+}
+
+.spotifyPlaylistSelect label,
+.spotifyScoreCap label {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+.spotifyPlaylistSelect select {
+  padding: var(--spacing-v-sm) var(--spacing-h-md);
+  background: var(--color-bg);
+  border: 1px solid color-mix(in srgb, var(--color-text-muted) 30%, transparent);
+  border-radius: var(--radius-md);
+  color: var(--color-text);
+  font-size: var(--text-sm);
+  cursor: pointer;
+  max-width: 100%;
+}
+
+.spotifyPlaylistSelect select:focus {
+  outline: none;
+  border-color: var(--color-accent);
+}
+
+.spotifyScoreCap {
+  flex-direction: row;
+  align-items: center;
+  gap: var(--spacing-h-sm);
+}
+
+.spotifyScoreCap input {
+  width: 60px;
+  padding: var(--spacing-v-xs) var(--spacing-h-sm);
+  background: var(--color-bg);
+  border: 1px solid color-mix(in srgb, var(--color-text-muted) 30%, transparent);
+  border-radius: var(--radius-sm);
+  color: var(--color-text);
+  font-size: var(--text-base);
+  text-align: center;
+}
+
+.spotifyScoreCap input:focus {
+  outline: none;
+  border-color: var(--color-accent);
+}
+
+.scoreCapUnit {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+.spotifyRemainingTracks {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}

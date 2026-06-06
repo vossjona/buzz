@@ -1,0 +1,71 @@
+/* ABOUTME: Styles for the answer time limit slider with non-linear scaling. */
+/* ABOUTME: Shows header with label/value, range input, and min/max labels. */
+
+.answerTimeLimitSlider {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-v-xs);
+  margin-bottom: var(--spacing-v-lg);
+}
+
+.sliderHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.sliderHeader label {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+.sliderValue {
+  font-size: var(--text-base);
+  font-weight: 600;
+  color: var(--color-accent);
+  min-width: 60px;
+  text-align: right;
+}
+
+.timeLimitRange {
+  width: 100%;
+  height: 8px;
+  -webkit-appearance: none;
+  appearance: none;
+  background: var(--color-bg);
+  border-radius: var(--radius-sm);
+  outline: none;
+  cursor: pointer;
+}
+
+.timeLimitRange::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  background: var(--color-accent);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform 0.1s ease;
+}
+
+.timeLimitRange::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+}
+
+.timeLimitRange::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  background: var(--color-accent);
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.sliderLabels {
+  display: flex;
+  justify-content: space-between;
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  padding: 0 var(--spacing-h-xs);
+}

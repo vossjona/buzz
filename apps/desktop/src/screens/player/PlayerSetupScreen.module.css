@@ -1,0 +1,126 @@
+/* ABOUTME: Styles for the player-side setup screen with 4-quarter team lock-in layout. */
+/* ABOUTME: Full-screen grid with fill animations and header/footer overlays. */
+
+.setupScreenFull {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.setupQuarters {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  width: 100%;
+  height: 100%;
+}
+
+.setupQuarter {
+  position: relative;
+  background: var(--color-bg);
+  border: 4px solid var(--team-color);
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.topLeft {
+  border-right-width: 2px;
+  border-bottom-width: 2px;
+}
+.topRight {
+  border-left-width: 2px;
+  border-bottom-width: 2px;
+}
+.bottomLeft {
+  border-right-width: 2px;
+  border-top-width: 2px;
+}
+.bottomRight {
+  border-left-width: 2px;
+  border-top-width: 2px;
+}
+
+.quarterFill {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse at center,
+    color-mix(in srgb, var(--team-color) 60%, transparent) 0%,
+    color-mix(in srgb, var(--team-color) 50%, transparent) 40%,
+    color-mix(in srgb, var(--team-color) 30%, transparent) 70%,
+    transparent 100%
+  );
+  transform: scale(0);
+  opacity: 0;
+  transition:
+    transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+    opacity 0.3s ease;
+}
+
+.lockedIn .quarterFill {
+  transform: scale(2.5);
+  opacity: 1;
+}
+
+.quarterContent {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.quarterName {
+  font-size: var(--text-2xl);
+  font-weight: 600;
+  color: var(--team-color);
+  opacity: 0.6;
+  transition: opacity 0.3s ease;
+}
+
+.lockedIn .quarterName {
+  opacity: 1;
+}
+
+.setupHeaderOverlay {
+  position: absolute;
+  top: var(--spacing-v-lg);
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.setupTitle {
+  font-size: var(--text-4xl);
+  font-weight: 700;
+  color: white;
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
+}
+
+.setupStartOverlay {
+  position: absolute;
+  bottom: var(--spacing-v-xl);
+  left: 50%;
+  transform: translateX(-50%);
+  padding: var(--spacing-v-md) var(--spacing-h-md);
+  background: color-mix(in srgb, var(--color-bg) 80%, transparent);
+  border-radius: var(--radius-lg);
+}
+
+.waitingText {
+  color: var(--color-text-muted);
+  font-size: var(--text-base);
+  animation: connectingPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes connectingPulse {
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+}

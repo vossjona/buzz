@@ -1,0 +1,38 @@
+/* ABOUTME: Styles for the KeyHint keyboard shortcut display component. */
+/* ABOUTME: Renders a styled keyboard key with optional label. */
+
+.keyHint {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+}
+
+.keyHint kbd {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  min-width: var(--size-kbd);
+  height: var(--size-kbd);
+  padding: 0 var(--spacing-h-sm);
+  background: var(--color-primary);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-sm);
+  font-family: inherit;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.keyLabel {
+  color: var(--color-text-muted);
+  font-size: 0.875rem;
+}
+
+.disabled {
+  opacity: 0.35;
+}
+
+.disabled kbd {
+  background: var(--color-surface);
+  text-decoration: line-through;
+}

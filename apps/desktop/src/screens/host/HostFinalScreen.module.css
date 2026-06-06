@@ -1,0 +1,24 @@
+/* ABOUTME: Styles for the host-side final screen with game over display. */
+/* ABOUTME: Contains replay controls and wraps shared final layout. */
+
+.hostFinalScreen {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+  gap: var(--spacing-v-lg);
+  padding: var(--spacing-v-xl) var(--spacing-h-xl);
+}
+
+.hostFinalScreen .hostTitle {
+  text-align: center;
+}
+
+.hostFinalControls {
+  display: flex;
+  gap: var(--spacing-h-md);
+  justify-content: center;
+  margin-top: var(--spacing-v-md);
+}

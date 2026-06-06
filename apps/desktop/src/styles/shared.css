@@ -1,0 +1,268 @@
+/* ABOUTME: Shared global styles used across multiple components. */
+/* ABOUTME: Includes app shell, screen base, buttons, sections, and layout helpers. */
+
+/* App container */
+.app {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.app.error {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+/* Screen base */
+.screen {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: var(--spacing-v-xl) var(--spacing-h-xl);
+  gap: var(--spacing-v-lg);
+}
+
+.screenTitle {
+  font-size: var(--text-3xl);
+  font-weight: 700;
+  color: var(--color-accent);
+  text-align: center;
+}
+
+.screenSubtitle {
+  font-size: var(--text-lg);
+  color: var(--color-text-muted);
+  text-align: center;
+}
+
+/* Team bar */
+.teamBar {
+  display: flex;
+  gap: var(--spacing-md);
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* Team slot */
+.teamSlot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-v-xs);
+  padding: var(--spacing-v-md) var(--spacing-h-lg);
+  background: var(--color-surface);
+  border: 3px solid transparent;
+  border-radius: var(--radius-lg);
+  min-width: var(--size-team-slot-min);
+  transition: all 0.2s ease;
+}
+
+.teamSlot.lockedIn {
+  border-color: var(--team-color);
+  box-shadow: 0 0 20px color-mix(in srgb, var(--team-color) 40%, transparent);
+}
+
+.teamSlot.active {
+  border-color: var(--team-color);
+  background: color-mix(in srgb, var(--team-color) 20%, var(--color-surface));
+  transform: scale(1.05);
+}
+
+.teamSlot .teamKey kbd {
+  background: var(--team-color);
+  font-size: var(--text-base);
+}
+
+.teamSlot .teamName {
+  font-size: var(--text-base);
+  font-weight: 600;
+  color: var(--team-color);
+}
+
+.teamSlot .teamScore {
+  font-size: var(--text-xl);
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.teamSlot .teamStatus {
+  font-size: var(--text-lg);
+  color: var(--color-success);
+}
+
+/* Game screen */
+.gameScreen {
+  position: relative;
+}
+
+.gameControls {
+  margin-top: var(--spacing-lg);
+}
+
+/* Final screen */
+.finalScreen {
+  gap: var(--spacing-v-lg);
+  align-items: stretch;
+}
+
+.finalScreen .screenTitle,
+.finalScreen .restartHint {
+  text-align: center;
+}
+
+/* Side-by-side layout for bar chart + history table */
+.finalContent {
+  display: flex;
+  flex-direction: row;
+  gap: var(--spacing-h-xl);
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  flex: 1;
+  min-height: 0;
+}
+
+.finalLeft {
+  flex: 0 0 40%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-v-lg);
+  justify-content: center;
+}
+
+.finalRight {
+  flex: 1;
+  align-self: center;
+  overflow-y: auto;
+  max-height: 60vh;
+}
+
+.restartHint {
+  color: var(--color-text-muted);
+  font-size: var(--text-base);
+}
+
+/* Host app */
+.hostApp {
+  background: var(--color-bg);
+}
+
+.hostTitle {
+  font-size: var(--text-2xl);
+  font-weight: 700;
+  color: var(--color-accent);
+  text-align: center;
+}
+
+.hostSection {
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-v-lg) var(--spacing-h-lg);
+}
+
+.hostSection h2 {
+  font-size: var(--text-lg);
+  color: var(--color-text-muted);
+  margin-bottom: var(--spacing-v-md);
+}
+
+/* Player status */
+.playerStatus {
+  color: var(--color-success);
+  font-size: var(--text-base);
+}
+
+/* Host button */
+.hostButton {
+  padding: var(--spacing-v-sm) var(--spacing-h-lg);
+  background: var(--color-primary);
+  border: 2px solid var(--color-accent);
+  border-radius: var(--radius-md);
+  color: var(--color-text);
+  font-size: var(--text-base);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.hostButton:hover {
+  background: var(--color-accent);
+}
+
+.hostButton.primary {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+.hostButton.primary:hover {
+  background: color-mix(in srgb, var(--color-accent) 80%, white);
+}
+
+.hostButton.secondary {
+  background: transparent;
+}
+
+.hostButton.secondary:hover {
+  background: var(--color-primary);
+}
+
+.hostButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.hostButton:disabled:hover {
+  background: var(--color-primary);
+}
+
+/* Host controls */
+.hostControls {
+  margin-top: auto;
+  display: flex;
+  justify-content: center;
+  padding: var(--spacing-v-lg) var(--spacing-h-lg);
+}
+
+/* Player app */
+.playerApp {
+  background: var(--color-bg);
+}
+
+.playerApp.connecting {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.connectingMessage {
+  text-align: center;
+}
+
+.connectingMessage h1 {
+  font-size: var(--text-3xl);
+  font-weight: 700;
+  color: var(--color-accent);
+  margin-bottom: var(--spacing-v-md);
+}
+
+.connectingMessage p {
+  font-size: var(--text-lg);
+  color: var(--color-text-muted);
+  animation: connectingPulse 1.5s ease-in-out infinite;
+}
+
+@keyframes connectingPulse {
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+}

@@ -1,0 +1,43 @@
+/* ABOUTME: Styling for AtomToken — word chips, scalar values, broadcast/hidden states. */
+/* ABOUTME: Hidden atoms preserve layout via visibility:hidden unless clickable. */
+
+.atom {
+  display: inline-block;
+  padding: 0 0.1em;
+  border-radius: 0.2em;
+  font: inherit;
+  background: transparent;
+  border: none;
+  color: inherit;
+}
+
+.word {
+  margin-right: 0.25em;
+}
+
+.scalar {
+  font-variant-numeric: tabular-nums;
+}
+
+.broadcast {
+  visibility: visible;
+}
+
+.hidden {
+  visibility: hidden;
+}
+
+.clickable {
+  cursor: pointer;
+  visibility: visible;
+}
+
+.clickable.hidden {
+  opacity: 0.3;
+  text-decoration: line-through;
+  visibility: visible;
+}
+
+.clickable:hover {
+  background: rgba(255, 255, 255, 0.1);
+}

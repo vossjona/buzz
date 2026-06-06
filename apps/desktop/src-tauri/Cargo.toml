@@ -1,0 +1,30 @@
+# ABOUTME: Cargo configuration for the Tauri desktop app.
+# ABOUTME: Defines Rust dependencies and build settings.
+
+[package]
+name = "buzz-desktop"
+version = "0.1.0"
+description = "A Tauri-based desktop quiz buzzer game"
+authors = ["vossjona"]
+edition = "2021"
+
+[lib]
+name = "buzz_desktop_lib"
+crate-type = ["lib", "cdylib", "staticlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = [] }
+tauri-plugin-shell = "2"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+hidapi = { version = "2", features = ["macos-shared-device"] }
+
+[profile.release]
+panic = "abort"
+codegen-units = 1
+lto = true
+opt-level = "s"
+strip = true

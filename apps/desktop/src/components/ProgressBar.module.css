@@ -1,0 +1,29 @@
+/* ABOUTME: Styling for the host-side playback progress bar. */
+
+.bar {
+  position: relative;
+  height: 1.25rem;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 0.25rem;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.fill {
+  background: rgba(255, 255, 255, 0.4);
+  height: 100%;
+  transition: width 100ms linear;
+}
+
+.time {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 0.75rem;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.25rem;
+  color: rgba(255, 255, 255, 0.85);
+  pointer-events: none;
+}

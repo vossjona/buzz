@@ -1,0 +1,57 @@
+/* ABOUTME: Styles for the horizontal score bar chart on the final screen. */
+/* ABOUTME: Shows each team's score as a colored bar with winner highlight. */
+
+.scoreBarChart {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-v-md);
+}
+
+.scoreBarRow {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-h-md);
+}
+
+.scoreBarName {
+  min-width: 120px;
+  font-weight: 600;
+  font-size: var(--text-base);
+  color: var(--team-color);
+  text-align: right;
+}
+
+.winnerStar {
+  color: #fbbf24;
+  margin-right: 4px;
+}
+
+.scoreBarTrack {
+  flex: 1;
+  height: 28px;
+  background: var(--color-surface);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.scoreBarFill {
+  height: 100%;
+  background: var(--team-color);
+  border-radius: var(--radius-md);
+  transition: width 0.8s ease-out;
+  min-width: 4px;
+}
+
+.winner .scoreBarFill {
+  box-shadow:
+    0 0 12px color-mix(in srgb, var(--team-color) 60%, transparent),
+    0 0 4px var(--team-color);
+}
+
+.scoreBarValue {
+  min-width: 36px;
+  font-weight: 700;
+  font-size: var(--text-lg);
+  color: var(--color-text);
+  text-align: left;
+}

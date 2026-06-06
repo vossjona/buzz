@@ -1,0 +1,6 @@
+# ABOUTME: Defines pnpm workspace packages for the buzz monorepo.
+# ABOUTME: Includes apps and packages directories.
+
+packages:
+  - 'apps/*'
+  - 'packages/*'

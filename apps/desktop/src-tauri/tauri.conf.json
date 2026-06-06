@@ -1,0 +1,35 @@
+{
+  "$schema": "https://schema.tauri.app/config/2",
+  "productName": "Buzz",
+  "version": "0.1.0",
+  "identifier": "com.buzz.quizgame",
+  "build": {
+    "beforeDevCommand": "pnpm vite:dev",
+    "devUrl": "http://127.0.0.1:8080",
+    "beforeBuildCommand": "pnpm vite:build",
+    "frontendDist": "../dist"
+  },
+  "app": {
+    "withGlobalTauri": true,
+    "windows": [
+      {
+        "label": "main",
+        "title": "Buzz - Host",
+        "width": 900,
+        "height": 700,
+        "resizable": true,
+        "fullscreen": false,
+        "center": true
+      }
+    ],
+    "security": {
+      "csp": "default-src 'self'; script-src 'self' 'unsafe-inline' https://sdk.scdn.co; connect-src 'self' ipc: http://ipc.localhost https://api.spotify.com https://accounts.spotify.com wss://dealer.spotify.com wss://*.spotify.com; frame-src 'self' https://sdk.scdn.co; style-src 'self' 'unsafe-inline'; img-src 'self' data: https://*.scdn.co https://*.spotify.com",
+      "capabilities": ["default"]
+    }
+  },
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "icon": ["icons/icon.png"]
+  }
+}

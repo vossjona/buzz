@@ -1,0 +1,99 @@
+/* ABOUTME: Styles for the USB buzzer pairing panel in the Host Setup Screen. */
+/* ABOUTME: Shows monitoring status, paired buzzer list, and clear button. */
+
+.buzzerPairingSection {
+  margin-top: var(--spacing-v-lg);
+  padding-top: var(--spacing-v-lg);
+  border-top: 1px solid
+    color-mix(in srgb, var(--color-text-muted) 30%, transparent);
+}
+
+.buzzerPairingSection h3 {
+  font-size: var(--text-base);
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: var(--spacing-v-md);
+}
+
+.buzzerStatus {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-h-sm);
+  font-size: var(--text-sm);
+  margin-bottom: var(--spacing-v-md);
+}
+
+.buzzerStatusDot {
+  width: 8px;
+  height: 8px;
+  background: var(--color-text-muted);
+  border-radius: 50%;
+}
+
+.buzzerStatusDot.active {
+  background: var(--color-success);
+  animation: buzzerPulse 2s ease-in-out infinite;
+}
+
+@keyframes buzzerPulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.buzzerPairedList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-v-sm);
+  margin-bottom: var(--spacing-v-md);
+}
+
+.buzzerPairedRow {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-h-sm);
+  font-size: var(--text-sm);
+}
+
+.buzzerTeamDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.buzzerLabel {
+  color: var(--color-text);
+}
+
+.buzzerTeamName {
+  color: var(--color-text-muted);
+}
+
+.buzzerHint {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  font-style: italic;
+  margin-bottom: var(--spacing-v-md);
+}
+
+.buzzerClearButton {
+  background: none;
+  border: 1px solid color-mix(in srgb, var(--color-text-muted) 50%, transparent);
+  border-radius: var(--radius-md);
+  color: var(--color-text-muted);
+  font-size: var(--text-sm);
+  padding: var(--spacing-v-xs) var(--spacing-h-md);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.buzzerClearButton:hover {
+  border-color: var(--color-error);
+  color: var(--color-error);
+}
