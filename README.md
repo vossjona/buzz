@@ -63,7 +63,7 @@ Before getting started, ensure you have the following installed:
    source "$HOME/.cargo/env"
    ```
 
-3. **Node.js LTS** (v20+)
+3. **Node.js LTS** (v22+)
 
    ```bash
    # Using Homebrew

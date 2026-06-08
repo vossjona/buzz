@@ -9,8 +9,8 @@ export default defineConfig({
     environment: 'jsdom',
     poolOptions: {
       forks: {
-        // Node 25 ships a partial experimental Web Storage implementation that
-        // shadows jsdom's localStorage/sessionStorage. Disable it so jsdom wins.
+        // Node ships an experimental Web Storage implementation that shadows
+        // jsdom's localStorage/sessionStorage in tests. Disable it so jsdom wins.
         execArgv: ['--no-experimental-webstorage'],
       },
     },

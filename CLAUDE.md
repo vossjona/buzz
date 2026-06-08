@@ -77,7 +77,7 @@ Styles are split into three tiers:
 
 ## Tech Stack
 
-- **Runtime**: Node.js 20+, pnpm 9+
+- **Runtime**: Node.js 22+, pnpm 9+
 - **Frontend**: React 18, Vite 6, TypeScript 5.7 (strict mode)
 - **Desktop**: Tauri v2 (requires Rust via rustup)
 - **Testing**: Vitest

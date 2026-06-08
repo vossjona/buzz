@@ -3,7 +3,7 @@
 ## Dev environment
 
 Follow the prerequisites in the [README](README.md#prerequisites-macos)
-(Rust, Node 20+, pnpm 9). Then:
+(Rust, Node 22+, pnpm 9). Then:
 
 ```bash
 pnpm install
