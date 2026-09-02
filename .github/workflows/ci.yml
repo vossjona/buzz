@@ -1,4 +1,4 @@
-# ABOUTME: GitHub Actions CI — runs the full pnpm check suite on pushes and PRs.
+# ABOUTME: GitHub Actions CI — runs the full pnpm check suite plus gitleaks secret scanning.
 # ABOUTME: JS-only (format, lint, typecheck, test); no Rust toolchain needed.
 name: CI
 
@@ -22,3 +22,13 @@ jobs:
       - run: pnpm lint
       - run: pnpm typecheck
       - run: pnpm test
+
+  secret-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0 # gitleaks scans full history
+      - uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
