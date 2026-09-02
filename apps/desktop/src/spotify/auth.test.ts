@@ -2,7 +2,11 @@
 // ABOUTME: Covers PKCE refresh coalescing and failure recovery.
 
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
-import { refreshAccessToken } from './auth';
+import {
+  refreshAccessToken,
+  parseCallbackUrl,
+  validateOAuthState,
+} from './auth';
 
 const makeTokenResponse = (overrides: Record<string, unknown> = {}) => ({
   access_token: 'access-1',
@@ -100,5 +104,56 @@ describe('refreshAccessToken', () => {
 
     expect(result).toBeNull();
     expect(fetchSpy).not.toHaveBeenCalled();
+  });
+});
+
+describe('parseCallbackUrl', () => {
+  it('extracts code and state from a callback URL', () => {
+    const result = parseCallbackUrl(
+      'http://127.0.0.1:8080/callback?code=abc123&state=xyz789'
+    );
+    expect(result).toEqual({ code: 'abc123', state: 'xyz789', error: null });
+  });
+
+  it('extracts an OAuth error', () => {
+    const result = parseCallbackUrl(
+      'http://127.0.0.1:8080/callback?error=access_denied&state=xyz789'
+    );
+    expect(result.error).toBe('access_denied');
+    expect(result.code).toBeNull();
+  });
+
+  it('returns an error for a malformed URL', () => {
+    const result = parseCallbackUrl('not a url');
+    expect(result).toEqual({
+      code: null,
+      state: null,
+      error: 'invalid callback URL',
+    });
+  });
+});
+
+describe('validateOAuthState', () => {
+  beforeEach(() => {
+    sessionStorage.clear();
+  });
+
+  it('accepts a state matching the stored value', () => {
+    sessionStorage.setItem('spotify_oauth_state', 'expected-state');
+    expect(validateOAuthState('expected-state')).toBe(true);
+  });
+
+  it('rejects a mismatched state', () => {
+    sessionStorage.setItem('spotify_oauth_state', 'expected-state');
+    expect(validateOAuthState('wrong-state')).toBe(false);
+  });
+
+  it('rejects when no state was stored', () => {
+    expect(validateOAuthState('anything')).toBe(false);
+  });
+
+  it('rejects null state', () => {
+    sessionStorage.setItem('spotify_oauth_state', 'expected-state');
+    expect(validateOAuthState(null)).toBe(false);
   });
 });

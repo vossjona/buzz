@@ -32,6 +32,7 @@ const STORAGE_KEYS = {
   accessToken: 'spotify_access_token',
   refreshToken: 'spotify_refresh_token',
   tokenExpiry: 'spotify_token_expiry',
+  oauthState: 'spotify_oauth_state',
 } as const;
 
 /**
@@ -62,22 +63,21 @@ async function generateCodeChallenge(verifier: string): Promise<string> {
 }
 
 /**
- * Initiates the OAuth flow by redirecting to Spotify's authorization page.
- * Stores the code verifier for later use in token exchange.
+ * Builds the Spotify authorize URL, storing the PKCE code verifier and
+ * the CSRF state in sessionStorage for later validation.
  */
-export async function initiateOAuthFlow(): Promise<void> {
+export async function buildAuthorizeUrl(): Promise<string> {
   if (!SPOTIFY_CONFIG.clientId) {
     throw new Error('VITE_SPOTIFY_CLIENT_ID environment variable is not set');
   }
 
-  // Generate and store code verifier
   const codeVerifier = generateRandomString(64);
   sessionStorage.setItem(STORAGE_KEYS.codeVerifier, codeVerifier);
-
-  // Generate code challenge
   const codeChallenge = await generateCodeChallenge(codeVerifier);
 
-  // Build authorization URL
+  const state = generateRandomString(16);
+  sessionStorage.setItem(STORAGE_KEYS.oauthState, state);
+
   const params = new URLSearchParams({
     client_id: SPOTIFY_CONFIG.clientId,
     response_type: 'code',
@@ -85,12 +85,47 @@ export async function initiateOAuthFlow(): Promise<void> {
     scope: SPOTIFY_CONFIG.scopes.join(' '),
     code_challenge_method: 'S256',
     code_challenge: codeChallenge,
-    // Add state for security (optional but recommended)
-    state: generateRandomString(16),
+    state,
   });
 
-  // Redirect to Spotify
-  window.location.href = `${SPOTIFY_CONFIG.authEndpoint}?${params.toString()}`;
+  return `${SPOTIFY_CONFIG.authEndpoint}?${params.toString()}`;
+}
+
+/**
+ * Initiates the dev-mode OAuth flow by redirecting the webview to Spotify.
+ * Only used in dev, where Vite serves the app on the redirect port.
+ */
+export async function initiateOAuthFlow(): Promise<void> {
+  window.location.href = await buildAuthorizeUrl();
+}
+
+/**
+ * Parses an OAuth callback URL into its code/state/error parts.
+ */
+export function parseCallbackUrl(url: string): {
+  code: string | null;
+  state: string | null;
+  error: string | null;
+} {
+  let parsed: URL;
+  try {
+    parsed = new URL(url);
+  } catch {
+    return { code: null, state: null, error: 'invalid callback URL' };
+  }
+  return {
+    code: parsed.searchParams.get('code'),
+    state: parsed.searchParams.get('state'),
+    error: parsed.searchParams.get('error'),
+  };
+}
+
+/**
+ * Validates a received OAuth state against the value stored at flow start.
+ */
+export function validateOAuthState(receivedState: string | null): boolean {
+  const expected = sessionStorage.getItem(STORAGE_KEYS.oauthState);
+  return expected !== null && receivedState === expected;
 }
 
 /**
@@ -287,6 +322,7 @@ export function clearStoredTokens(): void {
   localStorage.removeItem(STORAGE_KEYS.refreshToken);
   localStorage.removeItem(STORAGE_KEYS.tokenExpiry);
   sessionStorage.removeItem(STORAGE_KEYS.codeVerifier);
+  sessionStorage.removeItem(STORAGE_KEYS.oauthState);
 }
 
 /**
