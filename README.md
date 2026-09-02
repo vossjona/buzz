@@ -1,5 +1,9 @@
 # Buzz 🎵
 
+[![CI](https://github.com/vossjona/buzz/actions/workflows/ci.yml/badge.svg)](https://github.com/vossjona/buzz/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Tauri v2](https://img.shields.io/badge/Tauri-v2-24C8DB?logo=tauri&logoColor=white)](https://v2.tauri.app/)
+
 A local desktop music-quiz buzzer game. Host a "guess the song" night from
 your own Spotify playlists — teams race to buzz in with USB buzzers (or the
 keyboard), the host judges, scores climb, confetti happens.
@@ -204,3 +208,6 @@ pnpm tauri icon /path/to/your-icon.png
 ## License
 
 [MIT](LICENSE)
+
+The bundled sound effects (`apps/desktop/public/sounds/correct.mp3`,
+`wrong.mp3`) are royalty-free audio clips.
