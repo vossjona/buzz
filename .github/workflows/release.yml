@@ -17,6 +17,8 @@ jobs:
           - platform: windows-latest
             bundles: nsis
     runs-on: ${{ matrix.platform }}
+    permissions:
+      contents: write # tauri-action creates the draft release and uploads assets
     steps:
       - uses: actions/checkout@v6
       - name: Verify tag matches app version
