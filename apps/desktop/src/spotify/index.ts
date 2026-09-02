@@ -14,6 +14,8 @@ export {
   isAuthenticated,
 } from './auth';
 
+export { runSystemBrowserOAuthFlow } from './systemBrowserAuth';
+
 export {
   SpotifyPlayerWrapper,
   loadSpotifySDK,

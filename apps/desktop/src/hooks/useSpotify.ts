@@ -4,6 +4,7 @@
 import { useEffect, useCallback, useRef, useReducer } from 'react';
 import {
   initiateOAuthFlow,
+  runSystemBrowserOAuthFlow,
   extractAuthCode,
   extractAuthError,
   exchangeCodeForToken,
@@ -411,18 +412,27 @@ export function useSpotify(): UseSpotifyResult {
 
   /**
    * Initiates the Spotify login flow.
+   * Dev: redirects the webview (Vite serves the callback on port 8080).
+   * Prod: system browser + local callback server; resolves in place.
    */
   const login = useCallback(async () => {
     dispatch({ type: 'LOGIN_START' });
     try {
-      await initiateOAuthFlow();
-      // This will redirect, so we won't get here
+      if (import.meta.env.DEV) {
+        await initiateOAuthFlow();
+        // The webview navigates away; the callback is handled on remount.
+        return;
+      }
+      const code = await runSystemBrowserOAuthFlow();
+      const tokenData = await exchangeCodeForToken(code);
+      dispatch({ type: 'LOGIN_SUCCESS', accessToken: tokenData.access_token });
+      await initializePlayer();
     } catch (err) {
       const message =
         err instanceof Error ? err.message : 'Failed to start login';
       dispatch({ type: 'AUTH_FAILED', error: message });
     }
-  }, []);
+  }, [initializePlayer]);
 
   /**
    * Logs out and clears all auth data.
