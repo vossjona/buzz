@@ -11,6 +11,7 @@ use tauri::Manager;
 pub fn run() {
     tauri::Builder::default()
         .plugin(tauri_plugin_shell::init())
+        .plugin(tauri_plugin_oauth::init())
         .manage(hid_buzzer::BuzzerState(Mutex::new(
             hid_buzzer::BuzzerPairingState::new(),
         )))

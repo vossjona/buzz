@@ -10,6 +10,8 @@
     "core:window:allow-close",
     "core:webview:allow-create-webview-window",
     "core:event:default",
-    "shell:allow-open"
+    "shell:allow-open",
+    "oauth:allow-start",
+    "oauth:allow-cancel"
   ]
 }

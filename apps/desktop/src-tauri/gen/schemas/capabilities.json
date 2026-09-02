@@ -1,17 +1,1 @@
-{
-  "default": {
-    "identifier": "default",
-    "description": "Default capabilities for buzz desktop app",
-    "local": true,
-    "windows": ["main", "player"],
-    "permissions": [
-      "core:default",
-      "core:window:default",
-      "core:window:allow-set-fullscreen",
-      "core:window:allow-close",
-      "core:webview:allow-create-webview-window",
-      "core:event:default",
-      "shell:allow-open"
-    ]
-  }
-}
+{"default":{"identifier":"default","description":"Default capabilities for buzz desktop app","local":true,"windows":["main","player"],"permissions":["core:default","core:window:default","core:window:allow-set-fullscreen","core:window:allow-close","core:webview:allow-create-webview-window","core:event:default","shell:allow-open","oauth:allow-start","oauth:allow-cancel"]}}

@@ -16,8 +16,10 @@
   },
   "dependencies": {
     "@buzz/engine": "workspace:*",
+    "@fabianlars/tauri-plugin-oauth": "^2.1.0",
     "@spotify/web-api-ts-sdk": "^1.2.0",
     "@tauri-apps/api": "^2.11.1",
+    "@tauri-apps/plugin-shell": "^2.3.6",
     "canvas-confetti": "^1.9.4",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
