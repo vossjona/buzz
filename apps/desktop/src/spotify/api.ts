@@ -1,6 +1,7 @@
 // ABOUTME: Spotify Web API functions for fetching playlists and tracks.
 // ABOUTME: Uses @spotify/web-api-ts-sdk; called by the host for "Guess the Song" mode.
 
+import type { Page } from '@spotify/web-api-ts-sdk';
 import type { SpotifyPlaylistSummary, SpotifyTrackInfo } from './types';
 import { getSpotifyClient } from './client';
 
@@ -52,6 +53,9 @@ export async function fetchUserPlaylists(): Promise<SpotifyPlaylistSummary[]> {
 /**
  * Fetches all tracks in a playlist.
  * Skips local tracks (they can't be played via the Web Playback SDK).
+ * Calls `/playlists/{id}/items` directly: the SDK's `getPlaylistItems` still
+ * hits `/playlists/{id}/tracks`, which Spotify removed for Development Mode
+ * apps in February 2026.
  */
 export async function fetchPlaylistTracks(
   playlistId: string
@@ -62,24 +66,24 @@ export async function fetchPlaylistTracks(
   }
   return paginateAll(
     (offset) =>
-      sdk.playlists.getPlaylistItems(
-        playlistId,
-        undefined,
-        undefined,
-        PAGE_SIZE,
-        offset
+      sdk.makeRequest<Page<SdkPlaylistEntry>>(
+        'GET',
+        `playlists/${playlistId}/items?limit=${PAGE_SIZE}&offset=${offset}`
       ),
-    (item) => mapToTrackInfo(item.track),
+    mapPlaylistEntry,
     PAGE_SIZE
   );
 }
 
 // --- Pure mapping helpers ---
 
+// Spotify renamed `tracks` to `items` in February 2026. Apps created before
+// that still receive `tracks`; newer Development Mode apps receive `items`.
 interface SdkPlaylistShape {
   id: string;
   name: string;
-  tracks: { total: number; href: string } | null;
+  items?: { total: number; href: string } | null;
+  tracks?: { total: number; href: string } | null;
   images: Array<{
     url: string;
     height: number | null;
@@ -110,9 +114,22 @@ export function mapToPlaylistSummary(
   return {
     id: pl.id,
     name: pl.name,
-    trackCount: pl.tracks?.total ?? 0,
+    trackCount: pl.items?.total ?? pl.tracks?.total ?? 0,
     imageUrl: pl.images?.[0]?.url ?? null,
   };
+}
+
+// One entry of a playlist page. Older apps nest the track under `track`,
+// apps created after February 2026 nest it under `item`.
+interface SdkPlaylistEntry {
+  item?: SdkTrackShape | null;
+  track?: SdkTrackShape | null;
+}
+
+export function mapPlaylistEntry(
+  entry: SdkPlaylistEntry
+): SpotifyTrackInfo | null {
+  return mapToTrackInfo(entry.item ?? entry.track ?? null);
 }
 
 export function mapToTrackInfo(

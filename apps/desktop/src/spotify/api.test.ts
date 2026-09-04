@@ -2,7 +2,12 @@
 // ABOUTME: Covers playlist/track mapping and offset-pagination orchestration.
 
 import { describe, it, expect } from 'vitest';
-import { mapToPlaylistSummary, mapToTrackInfo, paginateAll } from './api';
+import {
+  mapPlaylistEntry,
+  mapToPlaylistSummary,
+  mapToTrackInfo,
+  paginateAll,
+} from './api';
 
 describe('mapToPlaylistSummary', () => {
   it('maps SDK playlist shape to SpotifyPlaylistSummary', () => {
@@ -38,6 +43,50 @@ describe('mapToPlaylistSummary', () => {
       images: null,
     });
     expect(result.imageUrl).toBeNull();
+  });
+
+  it('reads the track count from items (Spotify apps created after February 2026)', () => {
+    const result = mapToPlaylistSummary({
+      id: 'pl4',
+      name: 'New Shape',
+      items: { total: 7, href: '' },
+      images: null,
+    });
+    expect(result.trackCount).toBe(7);
+  });
+
+  it('prefers items over the deprecated tracks field when both are present', () => {
+    const result = mapToPlaylistSummary({
+      id: 'pl5',
+      name: 'Both',
+      items: { total: 7, href: '' },
+      tracks: { total: 3, href: '' },
+      images: null,
+    });
+    expect(result.trackCount).toBe(7);
+  });
+});
+
+describe('mapPlaylistEntry', () => {
+  const track = {
+    uri: 'spotify:track:abc',
+    name: 'Song',
+    artists: [{ name: 'Artist' }],
+    album: { name: 'Album', images: null },
+    duration_ms: 1000,
+    is_local: false,
+  };
+
+  it('reads the nested object from item (Spotify apps created after February 2026)', () => {
+    expect(mapPlaylistEntry({ item: track })?.uri).toBe('spotify:track:abc');
+  });
+
+  it('reads the nested object from track (older Spotify apps)', () => {
+    expect(mapPlaylistEntry({ track })?.uri).toBe('spotify:track:abc');
+  });
+
+  it('returns null for an empty slot', () => {
+    expect(mapPlaylistEntry({ item: null })).toBeNull();
   });
 });
 
