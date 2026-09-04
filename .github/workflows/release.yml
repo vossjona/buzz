@@ -1,5 +1,5 @@
-# ABOUTME: Release workflow — builds unsigned installers when a version tag is pushed.
-# ABOUTME: macOS (Apple Silicon .dmg) and Windows (x64 NSIS .exe) attach to a draft GitHub Release.
+# ABOUTME: Release workflow — a single job creates one draft GitHub Release, then
+# ABOUTME: macOS (Apple Silicon .dmg) and Windows (x64 NSIS .exe) builds attach to it.
 name: Release
 
 on:
@@ -7,7 +7,40 @@ on:
     tags: ['v*']
 
 jobs:
+  create-release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # creates the draft release
+    outputs:
+      release_id: ${{ steps.create.outputs.result }}
+    steps:
+      - uses: actions/checkout@v6
+      - name: Verify tag matches app version
+        shell: bash
+        run: |
+          APP_VERSION=$(node -p "require('./apps/desktop/src-tauri/tauri.conf.json').version")
+          TAG_VERSION="${GITHUB_REF_NAME#v}"
+          if [ "$APP_VERSION" != "$TAG_VERSION" ]; then
+            echo "Tag $GITHUB_REF_NAME does not match tauri.conf.json version $APP_VERSION" >&2
+            exit 1
+          fi
+      - name: Create draft release
+        id: create
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { data } = await github.rest.repos.createRelease({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              tag_name: process.env.GITHUB_REF_NAME,
+              name: `Buzz ${process.env.GITHUB_REF_NAME}`,
+              draft: true,
+              prerelease: false,
+            });
+            return data.id;
+
   build:
+    needs: create-release
     strategy:
       fail-fast: false
       matrix:
@@ -21,15 +54,6 @@ jobs:
       contents: write # tauri-action creates the draft release and uploads assets
     steps:
       - uses: actions/checkout@v6
-      - name: Verify tag matches app version
-        shell: bash
-        run: |
-          APP_VERSION=$(node -p "require('./apps/desktop/src-tauri/tauri.conf.json').version")
-          TAG_VERSION="${GITHUB_REF_NAME#v}"
-          if [ "$APP_VERSION" != "$TAG_VERSION" ]; then
-            echo "Tag $GITHUB_REF_NAME does not match tauri.conf.json version $APP_VERSION" >&2
-            exit 1
-          fi
       - uses: pnpm/action-setup@v6 # version from package.json "packageManager"
       - uses: actions/setup-node@v6
         with:
@@ -40,14 +64,20 @@ jobs:
         with:
           workspaces: apps/desktop/src-tauri
       - run: pnpm install --frozen-lockfile
+      - name: Ensure Spotify client ID secret is present
+        shell: bash
+        env:
+          VITE_SPOTIFY_CLIENT_ID: ${{ secrets.VITE_SPOTIFY_CLIENT_ID }}
+        run: |
+          if [ -z "$VITE_SPOTIFY_CLIENT_ID" ]; then
+            echo "VITE_SPOTIFY_CLIENT_ID repository secret is missing or empty" >&2
+            exit 1
+          fi
       - uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           VITE_SPOTIFY_CLIENT_ID: ${{ secrets.VITE_SPOTIFY_CLIENT_ID }}
         with:
           projectPath: apps/desktop
-          tagName: ${{ github.ref_name }}
-          releaseName: 'Buzz ${{ github.ref_name }}'
-          releaseDraft: true
-          prerelease: false
+          releaseId: ${{ needs.create-release.outputs.release_id }}
           args: --bundles ${{ matrix.bundles }}
