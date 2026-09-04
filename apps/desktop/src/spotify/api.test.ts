@@ -3,6 +3,7 @@
 
 import { describe, it, expect } from 'vitest';
 import {
+  canLoadPlaylistItems,
   mapPlaylistEntry,
   mapToPlaylistSummary,
   mapToTrackInfo,
@@ -254,5 +255,31 @@ describe('mapToTrackInfo — releaseYear', () => {
   it('returns null when release_date is missing', () => {
     const info = mapToTrackInfo(sdkTrack(undefined));
     expect(info?.releaseYear).toBeNull();
+  });
+});
+
+describe('canLoadPlaylistItems', () => {
+  it('is true for a playlist the user owns', () => {
+    expect(
+      canLoadPlaylistItems({ owner: { id: 'me' }, collaborative: false }, 'me')
+    ).toBe(true);
+  });
+
+  it('is true for a collaborative playlist owned by someone else', () => {
+    expect(
+      canLoadPlaylistItems(
+        { owner: { id: 'friend' }, collaborative: true },
+        'me'
+      )
+    ).toBe(true);
+  });
+
+  it('is false for a followed playlist owned by someone else', () => {
+    expect(
+      canLoadPlaylistItems(
+        { owner: { id: 'spotify' }, collaborative: false },
+        'me'
+      )
+    ).toBe(false);
   });
 });

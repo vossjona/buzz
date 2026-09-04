@@ -36,16 +36,20 @@ export async function paginateAll<TItem, TMapped>(
 }
 
 /**
- * Fetches all of the current user's playlists.
+ * Fetches the current user's playlists, keeping only those whose songs Buzz
+ * can load. Since February 2026 Spotify returns playlist contents to
+ * Development Mode apps only for playlists the user owns or collaborates on.
  */
 export async function fetchUserPlaylists(): Promise<SpotifyPlaylistSummary[]> {
   const sdk = await getSpotifyClient();
   if (!sdk) {
     throw new Error('Not authenticated with Spotify');
   }
+  const { id: userId } = await sdk.currentUser.profile();
   return paginateAll(
     (offset) => sdk.currentUser.playlists.playlists(PAGE_SIZE, offset),
-    mapToPlaylistSummary,
+    (pl) =>
+      canLoadPlaylistItems(pl, userId) ? mapToPlaylistSummary(pl) : null,
     PAGE_SIZE
   );
 }
@@ -106,6 +110,18 @@ interface SdkTrackShape {
   };
   duration_ms: number;
   is_local: boolean;
+}
+
+interface SdkPlaylistAccess {
+  owner: { id: string };
+  collaborative: boolean;
+}
+
+export function canLoadPlaylistItems(
+  pl: SdkPlaylistAccess,
+  userId: string
+): boolean {
+  return pl.owner.id === userId || pl.collaborative;
 }
 
 export function mapToPlaylistSummary(

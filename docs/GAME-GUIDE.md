@@ -11,11 +11,11 @@ a second Player window for the contestants.
 
 ## Setup screen
 
-| Setting           | What it does                               | Default | Range                 |
-| ----------------- | ------------------------------------------ | ------- | --------------------- |
-| Playlist          | Source of songs (random order, no repeats) | —       | any of your playlists |
-| Score to win      | Game ends when a team reaches this         | 10      | 1–100                 |
-| Answer Time Limit | How long a team may answer after buzzing   | 10 s    | Off, 3 s–260 s        |
+| Setting           | What it does                               | Default | Range                               |
+| ----------------- | ------------------------------------------ | ------- | ----------------------------------- |
+| Playlist          | Source of songs (random order, no repeats) | —       | playlists you own or collaborate on |
+| Score to win      | Game ends when a team reaches this         | 10      | 1–100                               |
+| Answer Time Limit | How long a team may answer after buzzing   | 10 s    | Off, 3 s–260 s                      |
 
 The gear icon (⚙) in the top-right corner of this screen changes your
 Spotify Client ID.

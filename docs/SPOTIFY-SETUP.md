@@ -29,7 +29,9 @@ the setup screen — saving a new Client ID disconnects Spotify.
 
 1. Start Buzz and click **Connect to Spotify** on the setup screen.
 2. Your browser opens Spotify's authorization page. Approve it.
-3. You're redirected back; Buzz now shows your playlists in a dropdown.
+3. You're redirected back; Buzz now lists the playlists you own or
+   collaborate on in a dropdown. Followed playlists are hidden (see
+   Troubleshooting).
 
 ## What Buzz asks for (OAuth scopes)
 
@@ -55,6 +57,10 @@ The Client ID is a public identifier used by the PKCE flow, not a secret.
   Secret or the app name.
 - **"INVALID_CLIENT: Invalid redirect URI"** — the redirect URI in your
   Spotify app settings doesn't exactly match `http://127.0.0.1:8080/callback`.
+- **A playlist is missing from the dropdown** — Buzz only lists playlists you
+  own or collaborate on. Since February 2026 Spotify no longer returns the
+  songs of followed or editorial playlists to Development Mode apps, so Buzz
+  hides them. Copy the songs into a playlist of your own to use them.
 - **Player fails right after connecting** — your account has no Premium
   subscription (the SDK emits an account error).
 - **Playback stutters when skipping fast** — Buzz spaces track starts ≥1s apart
