@@ -47,7 +47,7 @@ Buzz uses a private Spotify integration that works by invitation:
 
 1. Send the **email address of your Spotify account** to the person who gave
    you Buzz — they add you to the allowlist (takes them a minute).
-2. In Buzz, click **Connect Spotify**. Your normal browser opens; log in to
+2. In Buzz, click **Connect to Spotify**. Your normal browser opens; log in to
    Spotify (Premium account) and click **Agree**.
 3. The browser shows "Connected to Spotify" — close the tab and return to
    Buzz. Your playlists appear.
@@ -57,3 +57,21 @@ Buzz uses a private Spotify integration that works by invitation:
 - Pairing USB buzzers: see the [Buzzer Guide](BUZZERS.md) — or just use
   keyboard keys 1–4.
 - How a game night works: see the [Game Guide](GAME-GUIDE.md).
+
+## Troubleshooting
+
+**The button is stuck on "Connecting…"** — the login window in your browser
+was probably closed before finishing. After 5 minutes the button resets and
+you can try again (or quit and reopen Buzz).
+
+**Spotify says your account can't use this app** — you're not on the
+allowlist yet. Send the email address of your Spotify account to the person
+who gave you Buzz, wait for their go-ahead, then try again.
+
+**"Could not listen on port 8080"** — another program on your computer is
+using that port. Close it (or restart your computer), then click
+**Connect to Spotify** again.
+
+**Songs won't play** — make sure your Spotify account is **Premium** (the
+free tier can't be used for playback here), and that no other device is
+actively playing on your account.
