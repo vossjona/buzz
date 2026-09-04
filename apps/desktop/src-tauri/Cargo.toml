@@ -3,7 +3,7 @@
 
 [package]
 name = "buzz-desktop"
-version = "0.1.0"
+version = "0.2.0"
 description = "A Tauri-based desktop quiz buzzer game"
 authors = ["vossjona"]
 edition = "2021"
