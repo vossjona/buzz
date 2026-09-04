@@ -37,9 +37,25 @@ Intel Macs are not supported.
 ### Windows
 
 1. Run the downloaded `…-setup.exe`.
-2. Windows SmartScreen will warn about an unrecognized app. Click
+2. Some newer Windows 11 PCs have a separate, stricter feature called
+   **Smart App Control** turned on (it's usually only active on fresh
+   Windows installs). If it blocks the installer outright — a dialog says
+   "Smart App Control blocked an app", with only OK and "Get apps from
+   the Store" buttons and no "Run anyway" option — you have to turn it
+   off before you can run Buzz:
+   1. Open the **Windows Security** app.
+   2. Go to **App & browser control** → **Smart App Control settings**.
+   3. Set it to **Off**.
+
+   Before you do this: once Smart App Control is off, it can't be turned
+   back on without resetting or reinstalling Windows. Only turn it off if
+   you're fine with that.
+
+   Then run the installer again and continue with step 3 below.
+
+3. Windows SmartScreen will warn about an unrecognized app. Click
    **More info**, then **Run anyway**.
-3. Follow the installer. Buzz appears in the Start menu.
+4. Follow the installer. Buzz appears in the Start menu.
 
 ## 3. Spotify access
 
@@ -71,6 +87,13 @@ who gave you Buzz, wait for their go-ahead, then try again.
 **"Could not listen on port 8080"** — another program on your computer is
 using that port. Close it (or restart your computer), then click
 **Connect to Spotify** again.
+
+**The installer won't start / "Smart App Control blocked an app"** — your
+PC has Windows's Smart App Control feature turned on, which blocks
+unsigned apps like Buzz with no override. Turn it off in the Windows
+Security app: **App & browser control** → **Smart App Control settings**
+→ **Off**. Note that this can't be undone without resetting or
+reinstalling Windows. Then run the installer again.
 
 **Songs won't play** — make sure your Spotify account is **Premium** (the
 free tier can't be used for playback here), and that no other device is
