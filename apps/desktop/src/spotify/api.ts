@@ -80,7 +80,11 @@ interface SdkPlaylistShape {
   id: string;
   name: string;
   tracks: { total: number; href: string } | null;
-  images: Array<{ url: string; height: number | null; width: number | null }>;
+  images: Array<{
+    url: string;
+    height: number | null;
+    width: number | null;
+  }> | null;
 }
 
 interface SdkTrackShape {
@@ -89,7 +93,11 @@ interface SdkTrackShape {
   artists: Array<{ name: string }>;
   album: {
     name: string;
-    images: Array<{ url: string; height: number | null; width: number | null }>;
+    images: Array<{
+      url: string;
+      height: number | null;
+      width: number | null;
+    }> | null;
     release_date?: string;
   };
   duration_ms: number;
@@ -103,7 +111,7 @@ export function mapToPlaylistSummary(
     id: pl.id,
     name: pl.name,
     trackCount: pl.tracks?.total ?? 0,
-    imageUrl: pl.images[0]?.url ?? null,
+    imageUrl: pl.images?.[0]?.url ?? null,
   };
 }
 
@@ -114,7 +122,7 @@ export function mapToTrackInfo(
     return null;
   }
 
-  const images = track.album.images;
+  const images = track.album.images ?? [];
   const albumArtUrl =
     images.find((img) => img.height === 300)?.url ??
     images.find((img) => img.height === 640)?.url ??

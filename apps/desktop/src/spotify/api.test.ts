@@ -29,6 +29,16 @@ describe('mapToPlaylistSummary', () => {
     });
     expect(result.imageUrl).toBeNull();
   });
+
+  it('returns null imageUrl when images is null', () => {
+    const result = mapToPlaylistSummary({
+      id: 'pl3',
+      name: 'Null Images',
+      tracks: { total: 0, href: '' },
+      images: null,
+    });
+    expect(result.imageUrl).toBeNull();
+  });
 });
 
 describe('mapToTrackInfo', () => {
@@ -77,6 +87,11 @@ describe('mapToTrackInfo', () => {
   it('returns null albumArtUrl when no images exist', () => {
     const noImgs = { ...base, album: { ...base.album, images: [] } };
     expect(mapToTrackInfo(noImgs)?.albumArtUrl).toBeNull();
+  });
+
+  it('returns null albumArtUrl when images is null', () => {
+    const nullImgs = { ...base, album: { ...base.album, images: null } };
+    expect(mapToTrackInfo(nullImgs)?.albumArtUrl).toBeNull();
   });
 
   it('returns null for local tracks', () => {
