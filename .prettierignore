@@ -18,3 +18,6 @@ src-tauri/Cargo.lock
 # Misc
 *.log
 .DS_Store
+
+# Local agent scratch (git-excluded)
+.superpowers/
