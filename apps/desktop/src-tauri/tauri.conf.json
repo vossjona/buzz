@@ -40,7 +40,7 @@
   },
   "plugins": {
     "shell": {
-      "open": "https://accounts\\.spotify\\.com/authorize\\?.+"
+      "open": "(https://accounts\\.spotify\\.com/authorize\\?.+|https://developer\\.spotify\\.com/dashboard)"
     }
   }
 }
