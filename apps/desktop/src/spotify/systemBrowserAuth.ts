@@ -13,7 +13,7 @@ import { logger } from '../logging/logger';
 /** Must match the port in the registered redirect URI (SPOTIFY_CONFIG.redirectUri). */
 const CALLBACK_PORT = 8080;
 
-const RESPONSE_HTML = `<!doctype html><html><body style="font-family:system-ui;display:flex;align-items:center;justify-content:center;height:100vh;margin:0;background:#141021;color:#fff"><div style="text-align:center"><h1>Connected to Spotify ✅</h1><p>You can close this tab and return to Buzz.</p></div></body></html>`;
+const RESPONSE_HTML = `<!doctype html><html><head><meta charset="utf-8"><title>Buzz</title></head><body style="font-family:system-ui;display:flex;align-items:center;justify-content:center;height:100vh;margin:0;background:#141021;color:#fff"><div style="text-align:center"><h1>Connected to Spotify ✅</h1><p>You can close this tab and return to Buzz.</p></div></body></html>`;
 
 /** Port of a callback server left over from an abandoned attempt. */
 let activePort: number | null = null;
