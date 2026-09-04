@@ -1,7 +1,7 @@
 // ABOUTME: React hook for Spotify Web Playback SDK integration.
 // ABOUTME: Uses a reducer for state management; provides OAuth authentication, player control, and playlist fetching.
 
-import { useEffect, useCallback, useRef, useReducer } from 'react';
+import { useEffect, useCallback, useRef, useReducer, useState } from 'react';
 import {
   initiateOAuthFlow,
   runSystemBrowserOAuthFlow,
@@ -12,6 +12,9 @@ import {
   refreshAccessToken,
   clearStoredTokens,
   isAuthenticated,
+  normalizeClientId,
+  getStoredClientId,
+  storeClientId,
   SpotifyPlayerWrapper,
   loadSpotifySDK,
   createSpotifyPlayer,
@@ -188,6 +191,10 @@ export interface UseSpotifyResult {
   lastPositionMs: number;
   /** Wall-clock timestamp (Date.now()) when lastPositionMs was captured */
   lastPositionStampMs: number;
+  /** Stored Spotify Client ID, or null until the host enters one */
+  clientId: string | null;
+  /** Validates and stores a Client ID; returns an error message or null. Ends any current session. */
+  saveClientId: (raw: string) => string | null;
   /** Initiates the Spotify login flow */
   login: () => Promise<void>;
   /** Logs out and clears tokens */
@@ -222,6 +229,8 @@ export function useSpotify(): UseSpotifyResult {
     undefined,
     createInitialSpotifyState
   );
+
+  const [clientId, setClientId] = useState<string | null>(getStoredClientId);
 
   // Player wrapper instance
   const playerRef = useRef<SpotifyPlayerWrapper | null>(null);
@@ -384,6 +393,10 @@ export function useSpotify(): UseSpotifyResult {
    */
   useEffect(() => {
     const init = async () => {
+      // First run, or an upgrade from a build with a baked-in Client ID:
+      // nothing can be restored until the host enters their own ID.
+      if (!getStoredClientId()) return;
+
       // Check for OAuth callback
       if (extractAuthCode()) {
         if (callbackHandledRef.current) return;
@@ -443,6 +456,25 @@ export function useSpotify(): UseSpotifyResult {
     clearStoredTokens();
     dispatch({ type: 'LOGOUT' });
   }, []);
+
+  /**
+   * Validates and stores the host's Spotify Client ID.
+   * Any existing session is ended first: tokens are bound to the Client ID
+   * they were issued under, so they cannot survive a change.
+   */
+  const saveClientId = useCallback(
+    (raw: string): string | null => {
+      const normalized = normalizeClientId(raw);
+      if (!normalized) {
+        return 'A Spotify Client ID is 32 letters and digits. Check what you copied from the dashboard.';
+      }
+      logout();
+      storeClientId(normalized);
+      setClientId(normalized);
+      return null;
+    },
+    [logout]
+  );
 
   /**
    * Plays a specific track by URI.
@@ -525,6 +557,8 @@ export function useSpotify(): UseSpotifyResult {
 
   return {
     ...state,
+    clientId,
+    saveClientId,
     login,
     logout,
     playTrack,

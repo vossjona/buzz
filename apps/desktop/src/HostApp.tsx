@@ -1,7 +1,7 @@
 // ABOUTME: Host window orchestrator component.
 // ABOUTME: Wires hooks together and routes to the correct screen — contains no business logic.
 
-import { useCallback, useMemo } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { useGameState } from './hooks/useGameState';
 import { useGameSetup } from './hooks/useGameSetup';
 import { useHostInput } from './hooks/useHostInput';
@@ -25,6 +25,7 @@ import type { IntroState } from './events/types';
 import { HostSetupScreen } from './screens/host/HostSetupScreen';
 import { HostGameScreen } from './screens/host/HostGameScreen';
 import { HostFinalScreen } from './screens/host/HostFinalScreen';
+import { SpotifyClientIdScreen } from './screens/host/SpotifyClientIdScreen';
 import { getLockedInTeams } from './utils/teamUtils';
 
 const GAME_START_INTRO_STEPS: [string, string, string] = [
@@ -50,6 +51,19 @@ export function HostApp() {
 
   // Spotify integration
   const spotify = useSpotify();
+
+  // The Client ID screen blocks everything else on first run and while editing.
+  const [isEditingClientId, setIsEditingClientId] = useState(false);
+  const showClientIdScreen = spotify.clientId === null || isEditingClientId;
+
+  const handleSaveClientId = useCallback(
+    (raw: string) => {
+      const error = spotify.saveClientId(raw);
+      if (!error) setIsEditingClientId(false);
+      return error;
+    },
+    [spotify]
+  );
 
   const {
     engineState,
@@ -238,6 +252,7 @@ export function HostApp() {
     engineState,
     dispatch,
     isPlayerOpen,
+    isEnabled: !showClientIdScreen,
     onMarkCorrect,
     onMarkWrong,
     onReveal,
@@ -278,6 +293,20 @@ export function HostApp() {
         : null,
   };
 
+  if (showClientIdScreen) {
+    return (
+      <div className="app hostApp">
+        <SpotifyClientIdScreen
+          currentClientId={spotify.clientId}
+          onSave={handleSaveClientId}
+          onCancel={
+            spotify.clientId ? () => setIsEditingClientId(false) : undefined
+          }
+        />
+      </div>
+    );
+  }
+
   return (
     <div className="app hostApp">
       <SequenceOverlay
@@ -304,6 +333,7 @@ export function HostApp() {
           onAnswerTimeoutChange={setAnswerTimeoutSeconds}
           buzzerPairing={buzzerPairing}
           onStartGame={onStartGame}
+          onOpenSpotifySettings={() => setIsEditingClientId(true)}
         />
       )}
       {screen === 'game' && (

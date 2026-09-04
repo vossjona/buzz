@@ -40,6 +40,8 @@ interface HostSetupScreenProps {
   buzzerPairing?: BuzzerPairingHook;
   /** Start the game (same logic as pressing S). */
   onStartGame: () => void;
+  /** Opens the Spotify Client ID screen. */
+  onOpenSpotifySettings: () => void;
 }
 
 export function HostSetupScreen({
@@ -55,6 +57,7 @@ export function HostSetupScreen({
   onAnswerTimeoutChange,
   buzzerPairing,
   onStartGame,
+  onOpenSpotifySettings,
 }: HostSetupScreenProps) {
   const lockedInTeams = getLockedInTeams(engineState.teams);
   const lockedInCount = lockedInTeams.length;
@@ -65,6 +68,15 @@ export function HostSetupScreen({
   return (
     <div className={styles.hostSetupScreen}>
       <h1 className="hostTitle">Buzz! - Host Control</h1>
+      <button
+        type="button"
+        className={styles.settingsButton}
+        onClick={onOpenSpotifySettings}
+        aria-label="Spotify settings"
+        title="Spotify settings"
+      >
+        ⚙
+      </button>
 
       <div className={styles.hostSetupColumns}>
         {/* Left column: Teams */}

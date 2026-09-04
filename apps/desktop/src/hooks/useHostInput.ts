@@ -15,6 +15,8 @@ interface UseHostInputOptions {
   engineState: BuzzerState;
   dispatch: (event: BuzzerEvent) => void;
   isPlayerOpen: boolean;
+  /** False while a blocking screen (e.g. Client ID entry) owns the window. */
+  isEnabled: boolean;
   /** Host action callbacks — same logic also wired to on-screen buttons. */
   onMarkCorrect: () => void;
   onMarkWrong: () => void;
@@ -32,6 +34,7 @@ export function useHostInput(options: UseHostInputOptions): void {
     engineState,
     dispatch,
     isPlayerOpen,
+    isEnabled,
     onMarkCorrect,
     onMarkWrong,
     onReveal,
@@ -56,6 +59,8 @@ export function useHostInput(options: UseHostInputOptions): void {
   // Handle keyboard input based on current screen and phase
   const handleKeyDown = useCallback(
     async (key: string) => {
+      if (!isEnabled) return;
+
       // Setup screen
       if (screen === 'setup') {
         const teamKey = TEAM_CONFIGS.find((t) => t.key === key);
@@ -123,6 +128,7 @@ export function useHostInput(options: UseHostInputOptions): void {
     },
     [
       screen,
+      isEnabled,
       engineState,
       dispatch,
       onMarkCorrect,
@@ -140,6 +146,7 @@ export function useHostInput(options: UseHostInputOptions): void {
   // Handle gamepad/buzzer input (map device index to team)
   const handleDeviceBuzz = useCallback(
     (deviceIndex: number) => {
+      if (!isEnabled) return;
       const teamConfig = TEAM_CONFIGS[deviceIndex];
       if (!teamConfig) return;
 
@@ -152,7 +159,7 @@ export function useHostInput(options: UseHostInputOptions): void {
         dispatch({ type: 'BUZZ', teamId: teamConfig.id });
       }
     },
-    [screen, dispatch, isTeamEligibleToBuzz]
+    [screen, isEnabled, dispatch, isTeamEligibleToBuzz]
   );
 
   // USB buzzers are gated on the Player view being open during gameplay so

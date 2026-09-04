@@ -1,0 +1,80 @@
+/* ABOUTME: Styles for the Spotify Client ID entry screen. */
+/* ABOUTME: Instruction list, copyable redirect URI, and the ID form. */
+
+.clientIdScreen {
+  justify-content: flex-start;
+  overflow-y: auto;
+}
+
+.card {
+  width: 100%;
+  max-width: 720px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-v-lg);
+}
+
+.steps {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-v-md);
+  padding-left: var(--spacing-h-lg);
+  font-size: var(--text-base);
+}
+
+.steps li {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-v-xs);
+  align-items: flex-start;
+}
+
+.copyable {
+  user-select: all;
+  padding: var(--spacing-v-xs) var(--spacing-h-sm);
+  background: var(--color-bg);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-sm);
+}
+
+.hint {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-v-sm);
+}
+
+.form label {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+}
+
+.form input {
+  padding: var(--spacing-v-sm) var(--spacing-h-md);
+  background: var(--color-bg);
+  border: 1px solid color-mix(in srgb, var(--color-text-muted) 30%, transparent);
+  border-radius: var(--radius-md);
+  color: var(--color-text);
+  font-size: var(--text-base);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+.form input:focus {
+  outline: none;
+  border-color: var(--color-accent);
+}
+
+.error {
+  color: var(--color-error);
+  font-size: var(--text-sm);
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--spacing-h-sm);
+}
