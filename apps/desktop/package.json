@@ -1,6 +1,6 @@
 {
   "name": "@buzz/desktop",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "private": true,
   "description": "Tauri desktop app for the buzz quiz game",
   "type": "module",
