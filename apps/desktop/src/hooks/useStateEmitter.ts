@@ -2,7 +2,7 @@
 // ABOUTME: Used by the Host window to synchronize state with the Player display.
 
 import { useEffect, useRef } from 'react';
-import { emit } from '@tauri-apps/api/event';
+import { emit, listen } from '@tauri-apps/api/event';
 import { BuzzerState } from '@buzz/engine';
 import { Screen, AnswerResult, RoundResult } from './useGameState';
 import {
@@ -46,19 +46,31 @@ export function useStateEmitter(options: UseStateEmitterOptions): void {
 
   // Track previous state to avoid duplicate emissions
   const prevPayloadRef = useRef<string | null>(null);
+  // Latest payload, kept current even while no player window is open, so the
+  // PLAYER_READY responder below always answers with fresh state.
+  const latestPayloadRef = useRef<GameStateSyncPayload | null>(null);
 
-  // Reset previous payload when player becomes ready to force initial emission
+  // Answer every PLAYER_READY with a full state emission. The player
+  // re-announces until it receives state, so a lost message on either side
+  // (including a reloaded player window) recovers within a retry cycle.
   useEffect(() => {
-    if (isPlayerReady) {
-      prevPayloadRef.current = null;
-    }
-  }, [isPlayerReady]);
+    const unlistenPromise = listen(EVENTS.PLAYER_READY, () => {
+      const payload = latestPayloadRef.current;
+      if (!payload) {
+        return;
+      }
+      prevPayloadRef.current = JSON.stringify(payload);
+      emit(EVENTS.GAME_STATE_SYNC, payload).catch((err) => {
+        console.error('Failed to emit state to player:', err);
+      });
+    });
+
+    return () => {
+      unlistenPromise.then((unlisten) => unlisten());
+    };
+  }, []);
 
   useEffect(() => {
-    if (!isPlayerReady) {
-      return;
-    }
-
     const payload: GameStateSyncPayload = {
       engineState,
       screen,
@@ -68,6 +80,11 @@ export function useStateEmitter(options: UseStateEmitterOptions): void {
       roundResults,
       intro,
     };
+    latestPayloadRef.current = payload;
+
+    if (!isPlayerReady) {
+      return;
+    }
 
     // Simple deep comparison via JSON serialization
     const payloadStr = JSON.stringify(payload);
