@@ -64,19 +64,9 @@ jobs:
         with:
           workspaces: apps/desktop/src-tauri
       - run: pnpm install --frozen-lockfile
-      - name: Ensure Spotify client ID secret is present
-        shell: bash
-        env:
-          VITE_SPOTIFY_CLIENT_ID: ${{ secrets.VITE_SPOTIFY_CLIENT_ID }}
-        run: |
-          if [ -z "$VITE_SPOTIFY_CLIENT_ID" ]; then
-            echo "VITE_SPOTIFY_CLIENT_ID repository secret is missing or empty" >&2
-            exit 1
-          fi
       - uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          VITE_SPOTIFY_CLIENT_ID: ${{ secrets.VITE_SPOTIFY_CLIENT_ID }}
         with:
           projectPath: apps/desktop
           releaseId: ${{ needs.create-release.outputs.release_id }}
