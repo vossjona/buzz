@@ -12,6 +12,9 @@ export {
   refreshAccessToken,
   clearStoredTokens,
   isAuthenticated,
+  normalizeClientId,
+  getStoredClientId,
+  storeClientId,
 } from './auth';
 
 export { runSystemBrowserOAuthFlow } from './systemBrowserAuth';

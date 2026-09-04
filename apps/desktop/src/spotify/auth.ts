@@ -5,12 +5,11 @@ import type { SpotifyTokenResponse } from './types';
 import { logger } from '../logging/logger';
 
 /**
- * Spotify OAuth configuration.
- * CLIENT_ID should be set via environment variable VITE_SPOTIFY_CLIENT_ID.
+ * Spotify OAuth configuration. The Client ID is not part of this object: each
+ * host registers their own Spotify Developer app and Buzz stores the ID in
+ * localStorage (see getStoredClientId / storeClientId).
  */
 export const SPOTIFY_CONFIG = {
-  /** Client ID from Spotify Developer Dashboard */
-  clientId: (import.meta.env.VITE_SPOTIFY_CLIENT_ID as string) || '',
   /** Redirect URI for OAuth callback - must use 127.0.0.1, not localhost (Spotify requirement) */
   redirectUri: 'http://127.0.0.1:8080/callback',
   /** Required OAuth scopes - includes playlist access for "Guess the Song" mode */
@@ -33,7 +32,38 @@ const STORAGE_KEYS = {
   refreshToken: 'spotify_refresh_token',
   tokenExpiry: 'spotify_token_expiry',
   oauthState: 'spotify_oauth_state',
+  clientId: 'spotify_client_id',
 } as const;
+
+/** Spotify Client IDs are 32 hex characters; anything else is a paste error. */
+const CLIENT_ID_PATTERN = /^[0-9a-f]{32}$/i;
+
+/**
+ * Trims a pasted Client ID and returns it when it has Spotify's format,
+ * otherwise null.
+ */
+export function normalizeClientId(raw: string): string | null {
+  const trimmed = raw.trim();
+  return CLIENT_ID_PATTERN.test(trimmed) ? trimmed : null;
+}
+
+/** The Client ID the host entered on first run, or null before that. */
+export function getStoredClientId(): string | null {
+  return localStorage.getItem(STORAGE_KEYS.clientId);
+}
+
+export function storeClientId(clientId: string): void {
+  localStorage.setItem(STORAGE_KEYS.clientId, clientId);
+}
+
+/** Client ID for OAuth calls. Throws when the host has not entered one yet. */
+export function requireClientId(): string {
+  const clientId = getStoredClientId();
+  if (!clientId) {
+    throw new Error('Spotify Client ID is not set');
+  }
+  return clientId;
+}
 
 /**
  * Generates a cryptographically secure random string for the code verifier.
@@ -67,9 +97,7 @@ async function generateCodeChallenge(verifier: string): Promise<string> {
  * the CSRF state in sessionStorage for later validation.
  */
 export async function buildAuthorizeUrl(): Promise<string> {
-  if (!SPOTIFY_CONFIG.clientId) {
-    throw new Error('VITE_SPOTIFY_CLIENT_ID environment variable is not set');
-  }
+  const clientId = requireClientId();
 
   const codeVerifier = generateRandomString(64);
   sessionStorage.setItem(STORAGE_KEYS.codeVerifier, codeVerifier);
@@ -79,7 +107,7 @@ export async function buildAuthorizeUrl(): Promise<string> {
   sessionStorage.setItem(STORAGE_KEYS.oauthState, state);
 
   const params = new URLSearchParams({
-    client_id: SPOTIFY_CONFIG.clientId,
+    client_id: clientId,
     response_type: 'code',
     redirect_uri: SPOTIFY_CONFIG.redirectUri,
     scope: SPOTIFY_CONFIG.scopes.join(' '),
@@ -159,7 +187,7 @@ export async function exchangeCodeForToken(
   }
 
   const params = new URLSearchParams({
-    client_id: SPOTIFY_CONFIG.clientId,
+    client_id: requireClientId(),
     grant_type: 'authorization_code',
     code,
     redirect_uri: SPOTIFY_CONFIG.redirectUri,
@@ -284,7 +312,7 @@ async function doRefresh(): Promise<SpotifyTokenResponse | null> {
   }
 
   const params = new URLSearchParams({
-    client_id: SPOTIFY_CONFIG.clientId,
+    client_id: requireClientId(),
     grant_type: 'refresh_token',
     refresh_token: refreshToken,
   });

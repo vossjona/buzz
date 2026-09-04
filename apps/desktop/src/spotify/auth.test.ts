@@ -6,7 +6,14 @@ import {
   refreshAccessToken,
   parseCallbackUrl,
   validateOAuthState,
+  normalizeClientId,
+  getStoredClientId,
+  storeClientId,
+  requireClientId,
+  buildAuthorizeUrl,
 } from './auth';
+
+const CLIENT_ID = '0123456789abcdef0123456789abcdef';
 
 const makeTokenResponse = (overrides: Record<string, unknown> = {}) => ({
   access_token: 'access-1',
@@ -22,6 +29,7 @@ describe('refreshAccessToken', () => {
     localStorage.clear();
     sessionStorage.clear();
     localStorage.setItem('spotify_refresh_token', 'initial-refresh-token');
+    localStorage.setItem('spotify_client_id', CLIENT_ID);
   });
 
   afterEach(() => {
@@ -46,6 +54,19 @@ describe('refreshAccessToken', () => {
     expect(a).toEqual(tokenResponse);
     expect(b).toEqual(tokenResponse);
     expect(c).toEqual(tokenResponse);
+  });
+
+  it('sends the stored client id in the refresh request', async () => {
+    const fetchSpy = vi
+      .spyOn(globalThis, 'fetch')
+      .mockResolvedValue(
+        new Response(JSON.stringify(makeTokenResponse()), { status: 200 })
+      );
+
+    await refreshAccessToken();
+
+    const body = String(fetchSpy.mock.calls[0]?.[1]?.body);
+    expect(new URLSearchParams(body).get('client_id')).toBe(CLIENT_ID);
   });
 
   it('allows a fresh refresh after the in-flight one settles', async () => {
@@ -155,5 +176,54 @@ describe('validateOAuthState', () => {
   it('rejects null state', () => {
     sessionStorage.setItem('spotify_oauth_state', 'expected-state');
     expect(validateOAuthState(null)).toBe(false);
+  });
+});
+
+describe('normalizeClientId', () => {
+  it('accepts a 32-character hex id and trims whitespace', () => {
+    expect(normalizeClientId(`  ${CLIENT_ID}\n`)).toBe(CLIENT_ID);
+  });
+
+  it('accepts upper-case hex', () => {
+    expect(normalizeClientId(CLIENT_ID.toUpperCase())).toBe(
+      CLIENT_ID.toUpperCase()
+    );
+  });
+
+  it.each([
+    ['empty', ''],
+    ['too short', CLIENT_ID.slice(1)],
+    ['too long', `${CLIENT_ID}0`],
+    ['non-hex', `${CLIENT_ID.slice(1)}g`],
+    ['a pasted URL', `https://developer.spotify.com/${CLIENT_ID}`],
+  ])('rejects %s', (_label, raw) => {
+    expect(normalizeClientId(raw)).toBeNull();
+  });
+});
+
+describe('client id storage', () => {
+  beforeEach(() => {
+    localStorage.clear();
+    sessionStorage.clear();
+  });
+
+  it('returns null when nothing is stored', () => {
+    expect(getStoredClientId()).toBeNull();
+  });
+
+  it('round-trips through localStorage', () => {
+    storeClientId(CLIENT_ID);
+    expect(getStoredClientId()).toBe(CLIENT_ID);
+    expect(localStorage.getItem('spotify_client_id')).toBe(CLIENT_ID);
+  });
+
+  it('requireClientId throws a clear error when unset', () => {
+    expect(() => requireClientId()).toThrow('Spotify Client ID is not set');
+  });
+
+  it('buildAuthorizeUrl refuses to run without a client id', async () => {
+    await expect(buildAuthorizeUrl()).rejects.toThrow(
+      'Spotify Client ID is not set'
+    );
   });
 });

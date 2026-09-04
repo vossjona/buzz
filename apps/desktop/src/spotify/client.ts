@@ -3,7 +3,7 @@
 
 import { SpotifyApi, type AccessToken } from '@spotify/web-api-ts-sdk';
 import {
-  SPOTIFY_CONFIG,
+  requireClientId,
   getStoredAccessToken,
   getStoredRefreshToken,
   getStoredTokenExpiry,
@@ -62,5 +62,5 @@ export async function getSpotifyClient(): Promise<SpotifyApi | null> {
     getStoredTokenExpiry()
   );
 
-  return SpotifyApi.withAccessToken(SPOTIFY_CONFIG.clientId, tokenPayload);
+  return SpotifyApi.withAccessToken(requireClientId(), tokenPayload);
 }
