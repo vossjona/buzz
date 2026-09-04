@@ -17,23 +17,13 @@ Buzz plays music through Spotify. You need:
    - **APIs used**: check **Web API** and **Web Playback SDK**.
 4. Save, open the app's settings, and copy the **Client ID**.
 
-## 2. Configure Buzz
+## 2. Enter the Client ID in Buzz
 
-```bash
-cp apps/desktop/.env.example apps/desktop/.env
-```
+The first time you launch Buzz, it shows a **Spotify Client ID** screen.
+Paste the Client ID you copied above and save.
 
-Then open `apps/desktop/.env` and set your Client ID:
-
-```
-VITE_SPOTIFY_CLIENT_ID=paste-your-client-id-here
-```
-
-If the variable is missing, the Connect button fails with:
-
-```
-VITE_SPOTIFY_CLIENT_ID environment variable is not set
-```
+Need to change it later? Click the gear icon (⚙) in the top-right corner of
+the setup screen — saving a new Client ID disconnects Spotify.
 
 ## 3. Connect inside Buzz
 
@@ -51,12 +41,18 @@ VITE_SPOTIFY_CLIENT_ID environment variable is not set
 
 ## Where your tokens live
 
-Tokens are stored locally in the app's localStorage
-(`spotify_access_token`, `spotify_refresh_token`, `spotify_token_expiry`)
-and never leave your machine. **Disconnect** in the setup screen clears them.
+Tokens, and the Client ID you entered, are stored locally in the app's
+localStorage (`spotify_access_token`, `spotify_refresh_token`,
+`spotify_token_expiry`, `spotify_client_id`) and never leave your machine.
+The Client ID is a public identifier used by the PKCE flow, not a secret.
+**Disconnect** in the setup screen clears the tokens.
 
 ## Troubleshooting
 
+- **"A Spotify Client ID is 32 letters and digits. Check what you copied
+  from the dashboard."** — Buzz only accepts a full 32-character Client ID.
+  Copy the **Client ID** field from your app's settings, not the Client
+  Secret or the app name.
 - **"INVALID_CLIENT: Invalid redirect URI"** — the redirect URI in your
   Spotify app settings doesn't exactly match `http://127.0.0.1:8080/callback`.
 - **Player fails right after connecting** — your account has no Premium

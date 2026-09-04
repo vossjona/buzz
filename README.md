@@ -37,6 +37,10 @@ no telemetry — only your Spotify connection.
 - macOS, Windows, or Linux (developed on macOS; other platforms are
   supported by Tauri but less tested)
 
+Spotify's Developer Policy currently prohibits using the Web API for games
+and quizzes. Buzz ships without a Client ID for that reason: every host
+registers their own Spotify Developer app and uses it at their own risk.
+
 ## Install
 
 ### Download (no dev tools needed)
@@ -103,7 +107,6 @@ Windows/Linux users: see the [Tauri v2 prerequisites](https://v2.tauri.app/start
 git clone https://github.com/vossjona/buzz.git
 cd buzz
 pnpm install
-cp apps/desktop/.env.example apps/desktop/.env   # add your Spotify Client ID
 pnpm dev
 ```
 

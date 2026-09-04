@@ -7,7 +7,6 @@ Follow the prerequisites in the [README](README.md#prerequisites-macos)
 
 ```bash
 pnpm install
-cp apps/desktop/.env.example apps/desktop/.env   # Spotify Client ID, see docs/SPOTIFY-SETUP.md
 pnpm dev
 ```
 

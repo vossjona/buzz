@@ -17,6 +17,9 @@ a second Player window for the contestants.
 | Score to win      | Game ends when a team reaches this         | 10      | 1–100                 |
 | Answer Time Limit | How long a team may answer after buzzing   | 10 s    | Off, 3 s–260 s        |
 
+The gear icon (⚙) in the top-right corner of this screen changes your
+Spotify Client ID.
+
 Steps:
 
 1. Lock in teams: each team presses its key (1 Red, 2 Blue, 3 Green, 4 Yellow)

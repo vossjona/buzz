@@ -25,7 +25,7 @@
 
 Buzz is a Tauri v2 + React/TypeScript desktop quiz buzzer game. The "Guess the Song" mode plays music while players race to buzz in. The current Spotify integration:
 
-- OAuth 2.0 PKCE, client-side only. Client ID embedded in the app bundle (`VITE_SPOTIFY_CLIENT_ID`). No backend.
+- OAuth 2.0 PKCE, client-side only. Each host enters their own Client ID on first launch (stored in localStorage). No backend.
 - Tokens persisted in `localStorage`.
 - Spotify Web Playback SDK for in-browser playback.
 - Hand-rolled REST client against `https://api.spotify.com/v1` for playlists/tracks.

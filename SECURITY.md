@@ -19,7 +19,10 @@ The only external communication is with Spotify (OAuth + playback).
   (`spotify_access_token`, `spotify_refresh_token`, `spotify_token_expiry`)
   and are sent only to Spotify endpoints (`accounts.spotify.com`,
   `api.spotify.com`, and the Web Playback SDK's `*.spotify.com` websockets).
-- "Disconnect" on the setup screen clears them.
+- Your Spotify Client ID is also stored in localStorage
+  (`spotify_client_id`). It's a public identifier used by the PKCE flow,
+  not a secret.
+- "Disconnect" on the setup screen clears the tokens.
 - Scopes are limited to streaming, profile read, email read, and private-playlist read.
 
 ### Content Security Policy

@@ -59,14 +59,22 @@ Intel Macs are not supported.
 
 ## 3. Spotify access
 
-Buzz uses a private Spotify integration that works by invitation:
+Buzz plays music through your own free Spotify Developer app — about 5
+minutes to set up, once:
 
-1. Send the **email address of your Spotify account** to the person who gave
-   you Buzz — they add you to the allowlist (takes them a minute).
-2. In Buzz, click **Connect to Spotify**. Your normal browser opens; log in to
+1. Create a Spotify Developer app and set its **Redirect URI** to exactly
+   `http://127.0.0.1:8080/callback` — see
+   [Spotify setup, step 1](SPOTIFY-SETUP.md#1-create-a-spotify-developer-app)
+   for the full walkthrough.
+2. The first time you open Buzz, it shows a **Spotify Client ID** screen.
+   Paste the Client ID from your new app there and save.
+3. Click **Connect to Spotify**. Your normal browser opens; log in to
    Spotify (Premium account) and click **Agree**.
-3. The browser shows "Connected to Spotify" — close the tab and return to
+4. The browser shows "Connected to Spotify" — close the tab and return to
    Buzz. Your playlists appear.
+
+Need to use a different Client ID later? Click the gear icon (⚙) in the
+top-right corner of the setup screen — saving a new one disconnects Spotify.
 
 ## 4. Play
 
@@ -80,9 +88,14 @@ Buzz uses a private Spotify integration that works by invitation:
 was probably closed before finishing. After 5 minutes the button resets and
 you can try again (or quit and reopen Buzz).
 
-**Spotify says your account can't use this app** — you're not on the
-allowlist yet. Send the email address of your Spotify account to the person
-who gave you Buzz, wait for their go-ahead, then try again.
+**Buzz says the Client ID looks wrong** — Buzz only accepts a full
+32-character Client ID. Make sure you copied the **Client ID** from your
+Spotify app's settings, not the Client Secret or the app name.
+
+**"INVALID_CLIENT: Invalid redirect URI" in the browser** — the redirect URI
+in your Spotify app's settings doesn't exactly match
+`http://127.0.0.1:8080/callback`. Fix it on the
+[developer dashboard](https://developer.spotify.com/dashboard) and try again.
 
 **"Could not listen on port 8080"** — another program on your computer is
 using that port. Close it (or restart your computer), then click
