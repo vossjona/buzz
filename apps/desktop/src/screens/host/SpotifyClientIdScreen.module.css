@@ -15,29 +15,40 @@
 }
 
 .steps {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-v-md);
-  padding-left: var(--spacing-h-lg);
+  padding-left: 1.5em;
   font-size: var(--text-base);
+  line-height: 1.6;
 }
 
 .steps li {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-v-xs);
-  align-items: flex-start;
+  padding-left: var(--spacing-h-sm);
+}
+
+.steps li + li {
+  margin-top: var(--spacing-v-md);
+}
+
+.steps li::marker {
+  color: var(--color-accent);
+  font-weight: 700;
+}
+
+.dashboardButton {
+  display: block;
+  margin-top: var(--spacing-v-sm);
 }
 
 .copyable {
+  display: inline-block;
   user-select: all;
-  padding: var(--spacing-v-xs) var(--spacing-h-sm);
+  padding: 0 var(--spacing-h-sm);
   background: var(--color-bg);
   border-radius: var(--radius-sm);
   font-size: var(--text-sm);
 }
 
 .hint {
+  display: block;
   font-size: var(--text-sm);
   color: var(--color-text-muted);
 }

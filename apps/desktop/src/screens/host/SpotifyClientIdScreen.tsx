@@ -45,7 +45,7 @@ export function SpotifyClientIdScreen({
             Premium account. Click <strong>Create app</strong>.
             <button
               type="button"
-              className="hostButton secondary"
+              className={`hostButton secondary ${styles.dashboardButton}`}
               onClick={() => void open(DASHBOARD_URL)}
             >
               Open dashboard
