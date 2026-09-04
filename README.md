@@ -37,9 +37,18 @@ no telemetry — only your Spotify connection.
 - macOS, Windows, or Linux (developed on macOS; other platforms are
   supported by Tauri but less tested)
 
-## Install (build from source)
+## Install
 
-### Prerequisites (macOS)
+### Download (no dev tools needed)
+
+Grab an installer from the [latest release](https://github.com/vossjona/buzz/releases/latest):
+**macOS (Apple Silicon)** `Buzz_<version>_aarch64.dmg` · **Windows** `Buzz_<version>_x64-setup.exe`.
+The builds are unsigned, so the OS warns on first launch —
+**[docs/INSTALL.md](docs/INSTALL.md)** walks through it, plus the Spotify setup.
+
+### Build from source
+
+#### Prerequisites (macOS)
 
 Before getting started, ensure you have the following installed:
 
@@ -88,7 +97,7 @@ Before getting started, ensure you have the following installed:
 
 Windows/Linux users: see the [Tauri v2 prerequisites](https://v2.tauri.app/start/prerequisites/) for your platform.
 
-### Build and run
+#### Build and run
 
 ```bash
 git clone https://github.com/vossjona/buzz.git
@@ -111,6 +120,7 @@ Quick reference: `1-4` lock in / buzz for a team · `S` start · `C`/`W` judge �
 
 | Doc                                    | What's inside                          |
 | -------------------------------------- | -------------------------------------- |
+| [Install guide](docs/INSTALL.md)       | Download, first launch, Spotify access |
 | [Spotify setup](docs/SPOTIFY-SETUP.md) | Developer app, redirect URI, Client ID |
 | [Game guide](docs/GAME-GUIDE.md)       | Settings, game flow, host keys         |
 | [Buzzers](docs/BUZZERS.md)             | Supported hardware, pairing            |
