@@ -18,6 +18,9 @@ const RESPONSE_HTML = `<!doctype html><html><head><meta charset="utf-8"><title>B
 /** Port of a callback server left over from an abandoned attempt. */
 let activePort: number | null = null;
 
+/** Give up on an abandoned browser login so Connect can be retried. */
+const FLOW_TIMEOUT_MS = 5 * 60 * 1000;
+
 /**
  * Runs the production login flow: local callback server + system browser.
  * Resolves with the Spotify authorization code.
@@ -49,12 +52,21 @@ export async function runSystemBrowserOAuthFlow(): Promise<string> {
     let unlisten: (() => void) | undefined;
 
     const cleanup = async () => {
+      clearTimeout(timer);
       unlisten?.();
       if (activePort !== null) {
         await cancel(activePort).catch(() => undefined);
         activePort = null;
       }
     };
+
+    const timer = setTimeout(() => {
+      void cleanup().then(() =>
+        reject(
+          new Error('Login timed out. Click "Connect to Spotify" to try again.')
+        )
+      );
+    }, FLOW_TIMEOUT_MS);
 
     // Register the listener FIRST, and only then open the browser — so the
     // callback can never arrive before anyone is listening.
